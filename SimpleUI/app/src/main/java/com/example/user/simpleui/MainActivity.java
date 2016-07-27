@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editText;
     RadioGroup radioGroup;
     ListView listView;
+    Spinner spinner;
 
     String drink="black tea";
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         editText = (EditText)findViewById(R.id.editText);
         radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
         listView=(ListView)findViewById(R.id.listView);
+        spinner=(Spinner)findViewById(R.id.spinner);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -44,15 +47,16 @@ public class MainActivity extends AppCompatActivity {
 
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
-                      public boolean onKey(View v, int keyCode, KeyEvent event) {
-                              if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                                    submit(v);
-                                    return true;
-                              }
-                                   return false;
-                           }
-              });
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    submit(v);
+                    return true;
+                }
+                return false;
+            }
+        });
               setupListView();
+              setupSpinner();
 
     }
     public void setupListView()
@@ -61,9 +65,16 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter adapter= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, orders);
         listView.setAdapter(adapter);
     }
+
+    public void setupSpinner()
+    {
+        String[] data=getResources().getStringArray(R.array.storeInfos);
+        ArrayAdapter adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, data);
+        spinner.setAdapter(adapter);
+    }
+
     public void submit(View view)
     {
-        textView.setText("Hello Android");
         String text=editText.getText().toString();
         text=text+" order:"+drink;
         textView.setText(text);
