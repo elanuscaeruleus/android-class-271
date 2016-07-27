@@ -45,21 +45,27 @@
         android:weightSum="1">
 
         <RadioButton
-            android:layout_width="47dp"
-            android:layout_height="163dp"
-            android:id="@+id/maleRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/blackTeaButton"
             android:layout_below="@+id/button"
             android:layout_alignRight="@+id/button"
             android:layout_alignEnd="@+id/button"
             android:checked="true"
-            android:drawableRight="@drawable/boy"
-            android:layout_weight="0.53" />
+            android:text="black tea" />
 
         <RadioButton
-            android:layout_width="221dp"
-            android:layout_height="151dp"
-            android:id="@+id/femaleRadioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/greenTeaButton2"
             android:checked="false"
-            android:drawableRight="@drawable/girl" />
+            android:text="green tea" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="milk tea"
+            android:id="@+id/milkTeaButton"
+            android:checked="false" />
     </RadioGroup>
 </RelativeLayout>
