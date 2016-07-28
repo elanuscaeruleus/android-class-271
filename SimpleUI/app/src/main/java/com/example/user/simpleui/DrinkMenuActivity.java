@@ -3,11 +3,19 @@ package com.example.user.simpleui;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrinkMenuActivity extends AppCompatActivity {
+
+    ListView drinkMenuListView;
+    TextView totalTextView;
+
 
     String[] drinkNames=new String[]{"White gourd tea", "Black tea", "Pearl black tea", "Milk black tea"};
 
@@ -17,12 +25,19 @@ public class DrinkMenuActivity extends AppCompatActivity {
 
     List<Drink> drinkList=new ArrayList<>();
 
+    List<Drink> drinkOrderList=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_menu);
 
+        drinkMenuListView=(ListView)findViewById(R.id.drinkMenuListView);
+        totalTextView=(TextView)findViewById(R.id.totalTextView);
+
         setData();
+
+        setupDrinkMenuListView();
 
         Log.d("Debug", "DrinkMenuActivity OnCreate");
     }
@@ -38,6 +53,32 @@ public class DrinkMenuActivity extends AppCompatActivity {
             drink.imageId=images[i];
             drinkList.add(drink);
         }
+    }
+
+    public void setupDrinkMenuListView()
+    {
+
+        DrinkAdapter adapter=new DrinkAdapter(this, drinkList);
+        drinkMenuListView.setAdapter(adapter);
+
+        drinkMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Drink drink=(Drink)parent.getAdapter().getItem(position);
+                drinkOrderList.add(drink);
+                setupTotalTextView();
+            }
+        });
+    }
+    public void setupTotalTextView()
+    {
+        int total=0;
+        for(Drink drink:drinkOrderList)
+        {
+            total+=drink.mPrices;
+        }
+
+        totalTextView.setText(String.valueOf(total));
     }
 
     protected void onStart(){
