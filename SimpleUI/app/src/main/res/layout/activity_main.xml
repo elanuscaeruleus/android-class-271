@@ -42,7 +42,8 @@
         android:layout_alignParentStart="true"
         android:id="@+id/radioGroup"
         android:layout_below="@+id/editText"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:visibility="gone">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -84,5 +85,14 @@
         android:layout_below="@+id/radioGroup"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MENU"
+        android:id="@+id/munuButton2"
+        android:layout_below="@+id/spinner"
+        android:layout_toRightOf="@+id/button"
+        android:onClick="goToMenu" />
 
 </RelativeLayout>
