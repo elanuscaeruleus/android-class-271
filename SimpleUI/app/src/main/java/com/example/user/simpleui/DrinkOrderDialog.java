@@ -1,6 +1,10 @@
 package com.example.user.simpleui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,7 +21,7 @@ import android.view.ViewGroup;
  * Use the {@link DrinkOrderDialog#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DrinkOrderDialog extends Fragment {
+public class DrinkOrderDialog extends DialogFragment {
 
     private OnDrinkOrderListener mListener;
 
@@ -40,19 +44,47 @@ public class DrinkOrderDialog extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+//    public void onCreate(Bundle savedInstanceState) {
+    //    super.onCreate(savedInstanceState);
+   //     if (getArguments() != null) {
+  //      }
+ //   }
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        return inflater.inflate(R.layout.fragment_drink_order_dialog, container, false);
+//    }
+
+
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
+        if(getArguments()!=null)
+        {
+
         }
-    }
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_drink_order_dialog, container, false);
-    }
+        View content=getActivity().getLayoutInflater().inflate(R.layout.fragment_drink_order_dialog, null);//layout apppereance
 
+        builder.setView(content)
+                .setTitle("Hello Dialog")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+        return builder.create();
+    }
 
     @Override
     public void onAttach(Context context) {

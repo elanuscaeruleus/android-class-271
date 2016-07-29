@@ -82,9 +82,8 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
 
         DrinkOrderDialog dialog=DrinkOrderDialog.newInstance();
 
-        ft.replace(R.id.root, dialog);
+        dialog.show(ft, "DrinkOrderDialog");
 
-        ft.commit();
     }
 
     public void setupTotalTextView()
