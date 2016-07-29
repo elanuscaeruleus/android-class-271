@@ -11,6 +11,9 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.RadioGroup;
 
 
 /**
@@ -23,7 +26,18 @@ import android.view.ViewGroup;
  */
 public class DrinkOrderDialog extends DialogFragment {
 
+    static final String DRINK_PARAM="drink";
+
+    Drink drink;
+
     private OnDrinkOrderListener mListener;
+
+    NumberPicker mediumNumberPicker;
+    NumberPicker largeNumberPicker;
+    RadioGroup sugarRadioGroup;
+    RadioGroup iceRadioGroup;
+    EditText noteEditText;
+
 
     public DrinkOrderDialog() {
         // Required empty public constructor
@@ -35,9 +49,11 @@ public class DrinkOrderDialog extends DialogFragment {
      * @return A new instance of fragment DrinkOrderDialog.
      */
     // TODO: Rename and change types and number of parameters
-    public static DrinkOrderDialog newInstance() {
+    public static DrinkOrderDialog newInstance(Drink drink) {
         DrinkOrderDialog fragment = new DrinkOrderDialog();
         Bundle args = new Bundle();
+
+        args.putParcelable(DRINK_PARAM, drink);
 
         fragment.setArguments(args);
         return fragment;
@@ -62,14 +78,14 @@ public class DrinkOrderDialog extends DialogFragment {
     {
         if(getArguments()!=null)
         {
-
+            drink=getArguments().getParcelable(DRINK_PARAM);
         }
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
 
         View content=getActivity().getLayoutInflater().inflate(R.layout.fragment_drink_order_dialog, null);//layout apppereance
 
         builder.setView(content)
-                .setTitle("Hello Dialog")
+                .setTitle(drink.name)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -82,6 +98,17 @@ public class DrinkOrderDialog extends DialogFragment {
 
                     }
                 });
+        mediumNumberPicker=(NumberPicker)content.findViewById(R.id.mediumNumberPicker);
+        largeNumberPicker=(NumberPicker)content.findViewById(R.id.largeNumberPicker);
+        iceRadioGroup=(RadioGroup)content.findViewById(R.id.iceRadioGroup);
+        sugarRadioGroup=(RadioGroup)content.findViewById(R.id.sugarRadioGroup);
+        noteEditText=(EditText)content.findViewById(R.id.noteEditText);
+
+        mediumNumberPicker.setMaxValue(100);
+        mediumNumberPicker.setMinValue(0);
+
+        largeNumberPicker.setMaxValue(100);
+        largeNumberPicker.setMinValue(0);
 
         return builder.create();
     }
