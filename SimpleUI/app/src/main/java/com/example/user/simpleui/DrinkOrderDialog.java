@@ -122,7 +122,35 @@ public class DrinkOrderDialog extends DialogFragment {
         largeNumberPicker.setMinValue(0);
         mediumNumberPicker.setValue(drinkOrder.lNumber);
 
+        noteEditText.setText(drinkOrder.note);
+
+        setSelectItemInRadioGroup(drinkOrder.ice, iceRadioGroup);
+
+        setSelectItemInRadioGroup(drinkOrder.sugar, sugarRadioGroup);
+
+
         return builder.create();
+    }
+
+    private void setSelectItemInRadioGroup(String selectedItem, RadioGroup radioGroup)
+    {
+        int count=radioGroup.getChildCount();
+        for(int i=0 ; i<count ; i++)
+        {
+            View view=radioGroup.getChildAt(i);
+            if(view instanceof RadioButton)
+            {
+                RadioButton radioButton=(RadioButton)view;
+                if(radioButton.getText().toString().equals(selectedItem))
+                {
+                    radioButton.setChecked(true);
+                }
+                else
+                {
+                    radioButton.setChecked(false);
+                }
+            }
+        }
     }
 
     private String getSelectedItemFromRadioGroup(RadioGroup radioGroup)
