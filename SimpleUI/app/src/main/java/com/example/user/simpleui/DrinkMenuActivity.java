@@ -28,8 +28,7 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
 
     List<Drink> drinkList=new ArrayList<>();
 
-   // List<Drink> drinkOrderList=new ArrayList<>();
-    List<DrinkOrder> drinkOrderList=new ArrayList<>();
+    ArrayList<DrinkOrder> drinkOrderList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +39,9 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
         totalTextView=(TextView)findViewById(R.id.totalTextView);
 
         setData();
+
+        drinkOrderList=getIntent().getParcelableArrayListExtra("drinkOrderList");
+        setupTotalTextView();
 
         setupDrinkMenuListView();
 
@@ -113,6 +115,7 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
     public void done(View view)
     {
         Intent intent=new Intent();
+        intent.putExtra("results", drinkOrderList);
         setResult(RESULT_OK, intent);
         finish();
     }
