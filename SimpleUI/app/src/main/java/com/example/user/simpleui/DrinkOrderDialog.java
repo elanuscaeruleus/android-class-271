@@ -120,7 +120,7 @@ public class DrinkOrderDialog extends DialogFragment {
 
         largeNumberPicker.setMaxValue(100);
         largeNumberPicker.setMinValue(0);
-        mediumNumberPicker.setValue(drinkOrder.lNumber);
+        largeNumberPicker.setValue(drinkOrder.lNumber);
 
         noteEditText.setText(drinkOrder.note);
 

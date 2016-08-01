@@ -1,6 +1,8 @@
 package com.example.user.simpleui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<DrinkOrder> drinkOrders=new ArrayList<>();
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         listView = (ListView) findViewById(R.id.listView);
         spinner = (Spinner) findViewById(R.id.spinner);
+
+        sharedPreferences=getSharedPreferences("UIState", Context.MODE_PRIVATE);
+        editor=sharedPreferences.edit();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -61,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                editor.putString("editText", editText.getText().toString());
+                editor.apply();
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     submit(v);
                     return true;
@@ -72,22 +82,49 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Order order=(Order)parent.getAdapter().getItem(position);
+                Order order = (Order) parent.getAdapter().getItem(position);
 //                Toast.makeText(MainActivity.this, "You click on"+order.note, Toast.LENGTH_SHORT).show();
                 Snackbar.make(parent, "You click on" + order.note, Snackbar.LENGTH_SHORT).setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        
+
                     }
                 }).show();
             }
         });
+
         setupListView();
         setupSpinner();
 
+
+
+
+
+        restoreUIState();
+        spinner.setSelection(sharedPreferences.getInt("spinner", 0));
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Log.d("debug", "MainActivity OnCreate");
 
+    }
+
+    private void restoreUIState()
+    {
+        editText.setText(sharedPreferences.getString("editText", ""));
+       spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+
+           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               editor.putInt("spinner", position);
+               editor.apply();
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> parent) {
+
+           }
+       });
     }
 
     public void setupListView() {
