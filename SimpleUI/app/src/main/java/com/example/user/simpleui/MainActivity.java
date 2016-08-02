@@ -23,6 +23,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +107,33 @@ public class MainActivity extends AppCompatActivity {
 
 
         restoreUIState();
+
+        ParseObject parseObject=new ParseObject("TestObject");
+        parseObject.put("foo", "food");
+        parseObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
+                else {
+                    e.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_LONG).show();
+                }
+                //https://www.parse.com/apps/quickstart#parse_data/mobile/android/native/existing
+            }
+        });
+
+        ParseQuery<ParseObject> query=new ParseQuery<ParseObject>("TestObject");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                for(ParseObject parseObject1:objects)
+                {
+                    Toast.makeText(MainActivity.this, parseObject1.getString("foo"), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         spinner.setSelection(sharedPreferences.getInt("spinner", 0));
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
