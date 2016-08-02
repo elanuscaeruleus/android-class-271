@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Order order = (Order) parent.getAdapter().getItem(position);
 //                Toast.makeText(MainActivity.this, "You click on"+order.note, Toast.LENGTH_SHORT).show();
-                Snackbar.make(parent, "You click on" + order.note, Snackbar.LENGTH_SHORT).setAction("OK", new View.OnClickListener() {
+                Snackbar.make(parent, "You click on" + order.getNote(), Snackbar.LENGTH_SHORT).setAction("OK", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -101,29 +101,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setupOrderHistory();
+        //setupOrderHistory();
         setupListView();
         setupSpinner();
 
 
         restoreUIState();
 
-        ParseObject parseObject=new ParseObject("TestObject");
-        parseObject.put("foo", "food");
-        parseObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null)
-                    Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_LONG).show();
-                else {
-                    e.printStackTrace();
-                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_LONG).show();
-                }
-                //https://www.parse.com/apps/quickstart#parse_data/mobile/android/native/existing
-            }
-        });
 
-        ParseQuery<ParseObject> query=new ParseQuery<ParseObject>("TestObject");
+/*        ParseQuery<ParseObject> query=new ParseQuery<ParseObject>("TestObject");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -132,9 +118,9 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, parseObject1.getString("foo"), Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
 
-        spinner.setSelection(sharedPreferences.getInt("spinner", 0));
+        //spinner.setSelection(sharedPreferences.getInt("spinner", 0));
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -160,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
        });
     }
 
-    private void setupOrderHistory()
+   /* private void setupOrderHistory()
     {
         String orderDatas=Utils.readFile(this, "history");
         String[] orderData=orderDatas.split("\n");
@@ -180,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     public void setupListView() {
 //        String[] data=new String[]{"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
@@ -202,15 +188,15 @@ public class MainActivity extends AppCompatActivity {
         editText.setText("");
 
         Order order = new Order();
-        order.note = text;
-        order.drinkOrders = drinkOrders;
-        order.storeInfo = (String) spinner.getSelectedItem();
+        order.setNote(text);
+        order.setDrinkOrders(drinkOrders);
+        order.setStoreInfo( (String) spinner.getSelectedItem());
 
         orders.add(order);
 
-        Gson gson=new Gson();
+        /*Gson gson=new Gson();
         String orderData=gson.toJson(order);
-        Utils.writeFile(this, "history", orderData+"\n");
+        Utils.writeFile(this, "history", orderData+"\n");*/
 
         drinkOrders=new ArrayList<>();
         setupListView();
