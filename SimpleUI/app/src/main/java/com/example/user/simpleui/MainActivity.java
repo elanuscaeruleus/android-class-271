@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //setupOrderHistory();
-        setupListView();
+        setupOrderHistory();
+        //setupListView();
         setupSpinner();
 
 
@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity {
        });
     }
 
-   /* private void setupOrderHistory()
+   private void setupOrderHistory()
     {
-        String orderDatas=Utils.readFile(this, "history");
+/*        String orderDatas=Utils.readFile(this, "history");
         String[] orderData=orderDatas.split("\n");
         Gson gson=new Gson();
 
@@ -165,8 +165,18 @@ public class MainActivity extends AppCompatActivity {
             {
                 e.printStackTrace();
             }
-        }
-    }*/
+        }*/
+        Order.getQuery().findInBackground(new FindCallback<Order>() {
+            @Override
+            public void done(List<Order> objects, ParseException e) {
+                if(e==null)
+                {
+                    orders=objects;
+                    setupListView();
+                }
+            }
+        });
+    }
 
     public void setupListView() {
 //        String[] data=new String[]{"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
