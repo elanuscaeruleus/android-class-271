@@ -3,10 +3,14 @@ package com.example.user.simpleui;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 /**
  * Created by user on 2016/7/28.
  */
-public class Drink implements Parcelable {
+@ParseClassName("Drink")
+public class Drink extends ParseObject implements Parcelable {
     String name;
     int lPrices;
     int mPrices;

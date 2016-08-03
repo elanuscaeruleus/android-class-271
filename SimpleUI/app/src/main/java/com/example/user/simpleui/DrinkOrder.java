@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.text.ParseException;
 
 /**
  * Created by user on 2016/8/1.
@@ -57,7 +60,7 @@ public class DrinkOrder extends ParseObject implements Parcelable {
 
 
     protected DrinkOrder(Parcel in) {
-        this.setDrink(in.readParcelable(Drink.class.getClassLoader()));
+        this.setDrink((Drink)in.readParcelable(Drink.class.getClassLoader()));
         this.setmNumber(in.readInt());
         this.setlNumber(in.readInt());
         this.setIce(in.readString());
@@ -74,7 +77,7 @@ public class DrinkOrder extends ParseObject implements Parcelable {
             }
             else
             {
-                
+                return getDrinkOrderFromCache(source.readString());
             }
         }
 
@@ -85,7 +88,7 @@ public class DrinkOrder extends ParseObject implements Parcelable {
     };
 
     public Drink getDrink() {
-        return getParseObject(DRINK_COL);
+        return (Drink)getParseObject(DRINK_COL);
     }
 
     public void setDrink(Drink drink) {
@@ -130,5 +133,15 @@ public class DrinkOrder extends ParseObject implements Parcelable {
 
     public void setNote(String note) {
         put(NOTE_COL, note);
+    }
+    public static ParseQuery<DrinkOrder> getQuery(){return ParseQuery.getQuery(DrinkOrder.class);}
+    public static DrinkOrder getDrinkOrderFromCache(String objectId)
+    {
+        try{
+            DrinkOrder drinkOrder=getQuery().setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK).get(objectIdbjectId);
+            return drinkOrder;
+        }catch(ParseException e){
+            return DrinkOrder.createWithoutData(DrinkOrder.class, objectId);
+        }
     }
 }

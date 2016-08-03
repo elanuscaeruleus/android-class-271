@@ -83,7 +83,7 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
 
         for(DrinkOrder drinkOrder:drinkOrderList)
         {
-            if(drinkOrder.drink.name.equals(drink.name))
+            if(drinkOrder.getDrink().name.equals(drink.name))
             {
                 order=drinkOrder;
                 break;
@@ -166,7 +166,7 @@ public class DrinkMenuActivity extends AppCompatActivity implements DrinkOrderDi
     public void onDrinkOrderFinished(DrinkOrder drinkOrder) {
         for(int i=0;i<drinkOrderList.size();i++)
         {
-            if(drinkOrderList.get(i).drink.name.equals(drinkOrder.drink.name))
+            if(drinkOrderList.get(i).getDrink().name.equals(drinkOrder.getDrink().name))
             {
                 drinkOrderList.set(i, drinkOrder);
                 setupTotalTextView();
