@@ -24,12 +24,15 @@ public class DrinkOrder extends ParseObject implements Parcelable {
 
     public DrinkOrder(Drink drink)
     {
+        super();
         this.setDrink(drink);
     }
 
+    public DrinkOrder(){super();}
+
     public int total()
     {
-        return getDrink().lPrices * getlNumber() + getDrink().mPrices * getmNumber();
+        return getDrink().getlPrices() * getlNumber() + getDrink().getmPrices() * getmNumber();
     }
 
     @Override
@@ -60,6 +63,7 @@ public class DrinkOrder extends ParseObject implements Parcelable {
 
 
     protected DrinkOrder(Parcel in) {
+        super();
         this.setDrink((Drink)in.readParcelable(Drink.class.getClassLoader()));
         this.setmNumber(in.readInt());
         this.setlNumber(in.readInt());
@@ -138,7 +142,7 @@ public class DrinkOrder extends ParseObject implements Parcelable {
     public static DrinkOrder getDrinkOrderFromCache(String objectId)
     {
         try{
-            DrinkOrder drinkOrder=getQuery().setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK).get(objectIdbjectId);
+            DrinkOrder drinkOrder = getQuery().setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK).get(objectId);
             return drinkOrder;
         }catch(ParseException e){
             return DrinkOrder.createWithoutData(DrinkOrder.class, objectId);
