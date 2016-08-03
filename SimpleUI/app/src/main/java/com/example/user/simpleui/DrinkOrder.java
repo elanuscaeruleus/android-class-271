@@ -144,7 +144,7 @@ public class DrinkOrder extends ParseObject implements Parcelable {
         try{
             DrinkOrder drinkOrder = getQuery().setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK).get(objectId);
             return drinkOrder;
-        }catch(ParseException e){
+        }catch(com.parse.ParseException e){
             return DrinkOrder.createWithoutData(DrinkOrder.class, objectId);
         }
     }

@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -63,6 +65,7 @@ public class DrinkAdapter extends BaseAdapter{
         holder.lPrceTextView.setText(String.valueOf(drink.getlPrices()));
         holder.mPriceTextView.setText(String.valueOf(drink.getmPrices()));
         //holder.imageView.setImageResource(drink.imageId);
+        Picasso.with(inflater.getContext()).load(drink.getParseFile().getUrl()).into(holder.imageView);
 
         return convertView;
     }

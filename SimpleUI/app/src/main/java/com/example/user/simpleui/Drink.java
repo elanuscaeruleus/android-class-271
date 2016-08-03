@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -15,8 +16,8 @@ import java.text.ParseException;
 @ParseClassName("Drink")
 public class Drink extends ParseObject implements Parcelable {
     String NAME_COL="name";
-    String LPRICES_COL="lPrices";
-    String MPRICES_COL="mPrices";
+    String LPRICES_COL="lPrice";
+    String MPRICES_COL="mPrice";
 
     int imageId;
 
@@ -92,13 +93,18 @@ public class Drink extends ParseObject implements Parcelable {
         this.put(MPRICES_COL, mPrices);
     }
 
+    public ParseFile getParseFile()
+    {
+        return getParseFile("image");
+    }
+
     public static ParseQuery<Drink> getQuery(){return ParseQuery.getQuery(Drink.class);}
     public static Drink getDrinkFromCache(String objectId)
     {
         try{
             Drink drink=getQuery().setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK).get(objectId);
             return drink;
-        }catch(ParseException e){
+        }catch(com.parse.ParseException e){
             return DrinkOrder.createWithoutData(Drink.class, objectId);
         }
     }

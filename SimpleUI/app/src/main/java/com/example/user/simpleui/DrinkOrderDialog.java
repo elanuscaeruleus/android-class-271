@@ -124,9 +124,11 @@ public class DrinkOrderDialog extends DialogFragment {
 
         noteEditText.setText(drinkOrder.getNote());
 
-        setSelectItemInRadioGroup(drinkOrder.getIce(), iceRadioGroup);
+        if(drinkOrder.getIce()!=null)
+            setSelectItemInRadioGroup(drinkOrder.getIce(), iceRadioGroup);
 
-        setSelectItemInRadioGroup(drinkOrder.getSugar(), sugarRadioGroup);
+        if(drinkOrder.getSugar()!=null)
+            setSelectItemInRadioGroup(drinkOrder.getSugar(), sugarRadioGroup);
 
 
         return builder.create();
