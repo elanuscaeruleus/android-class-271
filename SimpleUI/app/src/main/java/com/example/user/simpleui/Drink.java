@@ -3,12 +3,15 @@ package com.example.user.simpleui;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Created by user on 2016/7/28.
@@ -102,10 +105,30 @@ public class Drink extends ParseObject implements Parcelable {
     public static Drink getDrinkFromCache(String objectId)
     {
         try{
-            Drink drink=getQuery().setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK).get(objectId);
+            Drink drink=getQuery().fromLocalDatastore().get(objectId);
             return drink;
         }catch(com.parse.ParseException e){
             return DrinkOrder.createWithoutData(Drink.class, objectId);
         }
+    }
+
+    public static void getDrinkFromLocalThenRemote(final FindCallback callback)
+    {
+        getQuery().fromLocalDatastore().findInBackground(callback);
+        getQuery().findInBackground(new FindCallback<Drink>() {
+            @Override
+            public void done(final List<Drink> objects, com.parse.ParseException e) {
+                if(e==null)
+                {
+                    unpinAllInBackground("Drink", new DeleteCallback() {
+                        @Override
+                        public void done(com.parse.ParseException e) {
+                            pinAllInBackground("Drink", objects);
+                        }
+                    });
+                }
+                callback.done(objects, e);
+            }
+        });
     }
 }

@@ -1,6 +1,8 @@
 package com.example.user.simpleui;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -54,7 +56,22 @@ public class Order extends ParseObject{
     {
         ParseQuery<Order> query=ParseQuery.getQuery(Order.class);
         query.include(DRINKORDERS_COL);
-        query.include(DRINKORDERS_COL+"."+DrinkOrder.DRINK_COL);
+        query.include(DRINKORDERS_COL + "." + DrinkOrder.DRINK_COL);
         return query;
+    }
+
+    public static void getOrdersFromLocalThenRemote(final FindCallback<Order> callback)
+    {
+        getQuery().fromLocalDatastore().findInBackground(callback);
+        getQuery().findInBackground(new FindCallback<Order>() {
+            @Override
+            public void done(List<Order> objects, ParseException e) {
+                if(e==null)
+                {
+                    pinAllInBackground("Order", objects);
+                }
+                callback.done(objects, e);
+            }
+        });
     }
 }
