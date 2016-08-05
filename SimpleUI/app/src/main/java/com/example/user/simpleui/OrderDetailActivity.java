@@ -1,6 +1,7 @@
 package com.example.user.simpleui;
 
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.os.AsyncTask;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,19 @@ import android.widget.TextView;
 
 import android.os.Handler;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.lang.ref.WeakReference;
 import java.util.logging.LogRecord;
 
-public class OrderDetailActivity extends AppCompatActivity {
+public class OrderDetailActivity extends AppCompatActivity implements GeoCodingTask.GeoCodingRespone {
+
+    GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +52,19 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
         orderResultTextView.setText(orderResultText);
 
+        MapFragment mapFragment=(MapFragment)getFragmentManager().findFragmentById(R.id.mapFragment);
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                map = googleMap;
+                (new GeoCodingTask(OrderDetailActivity.this)).execute("台北市羅斯福路四段一號");
+            }
+        });
+
         ImageView staticImageView=(ImageView)findViewById(R.id.staticMapImageView);
 
-        (new GeoCodingTask(staticImageView)).execute("台北市羅斯福路四段一號");
+
         Log.e("Main Thread ID", Long.toString(Thread.currentThread().getId()));
 
        /* final Handler handler=new Handler(new Handler.Callback() {
@@ -80,7 +100,13 @@ public class OrderDetailActivity extends AppCompatActivity {
         Log.e("Main Thread ID", Long.toString(Thread.currentThread().getId()));
     }
 
-    public static class GeoCodingTask extends AsyncTask<String, Void, Bitmap>{
+    @Override
+    public void callbackWithGeoCodingResult(LatLng latLng) {
+        CameraUpdate cameraUpdate= CameraUpdateFactory.newLatLngZoom(latLng, 17);
+        map.moveCamera(cameraUpdate);
+    }
+
+    /*public static class GeoCodingTask extends AsyncTask<String, Void, Bitmap>{
 
         WeakReference<ImageView> imageViewWeakReference;
 
@@ -110,5 +136,5 @@ public class OrderDetailActivity extends AppCompatActivity {
         {
             imageViewWeakReference=new WeakReference<ImageView>(imageView);
         }
-    }
+    }*/
 }
